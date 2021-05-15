@@ -1,11 +1,12 @@
-name: Clone Repository
+name: Clone and Build Repository
 on: #TRIGGERS
     push: # On  push
         brancehs: #on brnaches
             - main # main one
 
 jobs:
-    Build: # Job name
+    Build:
+        name: BuildJob
         runs-on: ubuntu-latest # Operating system selection
         env: # Environment can be controlled at the job or step level
             TERM: dumb #no prints
@@ -18,3 +19,9 @@ jobs:
                 java-version: 15
             - name: Build and Check :P #cusom action
               run: ./gradlew clean build #performs gradlew build, it check if present checkstyle, it runs test with junit, it assembles the jar
+            - name: Send custom Telegram Message with args
+              uses: appleboy/telegram-action@master
+              with:
+                to: ${{ secrets.TELEGRAM_TO }}
+                token: ${{ secrets.TELEGRAM_TOKEN }}
+                args: CI COMPLETED for ${{ github.event_name }} event on ${{ github.repository }}, by ${{ github.actor }}.

@@ -4,6 +4,7 @@
 .classpath
 /build
 /gradle
+/.gradle
 .gradle
 
 # Compiled class file
