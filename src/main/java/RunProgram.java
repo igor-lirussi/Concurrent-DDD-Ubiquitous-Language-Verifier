@@ -35,7 +35,7 @@ public class RunProgram {
     //Extracting list file names from directory, WITH A TASK passed to the executor
 	Future<String[]> futPdfList = null;
 	try {
-		futPdfList = executor.submit( new TaskFindPdfs(pdfDir) ); //faccio submit, mi restituisce una future
+		futPdfList = executor.submit( new TaskFindFiles(pdfDir) ); //faccio submit, mi restituisce una future
 	} catch (Exception e) { 
 		e.printStackTrace();
 	}

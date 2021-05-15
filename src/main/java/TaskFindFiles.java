@@ -2,11 +2,11 @@ import java.io.File;
 import java.util.concurrent.Callable;
 
 //callable
-public class TaskFindPdfs implements Callable<String[]>  {
+public class TaskFindFiles implements Callable<String[]>  {
 
 	private String dirName;
 
-	public TaskFindPdfs(String dirName) {
+	public TaskFindFiles(String dirName) {
 		this.dirName = dirName;
 	}
 

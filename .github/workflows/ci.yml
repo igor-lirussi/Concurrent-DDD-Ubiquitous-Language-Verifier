@@ -1,0 +1,20 @@
+name: Clone Repository
+on: #TRIGGERS
+    push: # On  push
+        brancehs: #on brnaches
+            - main # main one
+
+jobs:
+    Build: # Job name
+        runs-on: ubuntu-latest # Operating system selection
+        env: # Environment can be controlled at the job or step level
+            TERM: dumb #no prints
+        steps:
+            - name: Clone Repo with Checkout # first step
+              uses: actions/checkout@v2 # clones repo! Action implemented in this repository, tag "2"
+            - name: Install JDK
+              uses: joschi/setup-jdk@v2.3.0 # download jdk! Action implemented in repository "joschi/setup-jdk" tag "2.3.0"
+              with: # Actions parameters (action name omitted)
+                java-version: 15
+            - name: Build and Check :P #cusom action
+              run: ./gradlew clean build #performs gradlew build, it check if present checkstyle, it runs test with junit, it assembles the jar
