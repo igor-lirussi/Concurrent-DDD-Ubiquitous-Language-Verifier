@@ -1,18 +1,28 @@
+package main.java.program;
+
+
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 
+
 public class RunProgram {
+
+	  private static String filesDir;
+	  private static String fileIgnoredWords;
+	  private static int topWords;
+	
   static public void main(String[] args){
 	
 	  
 	//Arguments
-	String pdfDir = "./src";
-	int topWords = 10; 
-	String fileIgnoredWords = "./ignoredWords.txt";
+	filesDir = "./src";
+	topWords = 10; 
+	fileIgnoredWords = "./wordsToIgnore.txt";
 	try {
-		pdfDir = args[0];
+		filesDir = args[0];
 		topWords = Integer.parseInt(args[1]);
 		fileIgnoredWords = args[2];
 	} catch (Exception e) {
@@ -35,7 +45,7 @@ public class RunProgram {
     //Extracting list file names from directory, WITH A TASK passed to the executor
 	Future<String[]> futPdfList = null;
 	try {
-		futPdfList = executor.submit( new TaskFindFiles(pdfDir) ); //faccio submit, mi restituisce una future
+		futPdfList = executor.submit( new TaskFindFiles(filesDir) ); //faccio submit, mi restituisce una future
 	} catch (Exception e) { 
 		e.printStackTrace();
 	}
@@ -92,9 +102,9 @@ public class RunProgram {
 private static void usage() {
     System.err.println("Error with arguments, using default ones");
     System.err.println("Usage: java " + RunProgram.class.getName() +
-    		" <pdf directory (default ./PDF)>" +
-    		" <number top words (default 10)>" +
-    		" <file words to ignore (default ./ignoredWords.txt)>");
+    		" <pdf directory (default "+ filesDir +")>" +
+    		" <number top words (default "+topWords+")>" +
+    		" <file words to ignore (default "+fileIgnoredWords+")>");
 }
   
 }

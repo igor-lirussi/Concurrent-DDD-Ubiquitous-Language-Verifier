@@ -1,3 +1,5 @@
+package main.java.program;
+
 import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -27,20 +29,19 @@ public class TaskListIgnoredWords implements Callable<String[]>  {
 		try {
 			fstream_school = new FileInputStream(fileIgnoredWords);
 		
-	    DataInputStream data_input = new DataInputStream(fstream_school); 
-	    BufferedReader buffer = new BufferedReader(new InputStreamReader(data_input)); 
-	    String str_line; 
-
-	    while ((str_line = buffer.readLine()) != null) { 
-	        str_line = str_line.trim(); 
-	        if ((str_line.length()!=0))  
-	        { 
-	            itemsSchool.add(str_line);
-	        } 
-	    }
-	    buffer.close();
-	    
-	    arr = (String[])itemsSchool.toArray(new String[itemsSchool.size()]);
+		    DataInputStream data_input = new DataInputStream(fstream_school); 
+		    BufferedReader buffer = new BufferedReader(new InputStreamReader(data_input)); 
+		    String str_line; 
+	
+		    while ((str_line = buffer.readLine()) != null) {
+		        if ((str_line.length()!=0))  
+		        { 
+		            itemsSchool.add(str_line.trim().replaceAll("\\s", ""));
+		        } 
+		    }
+		    buffer.close();
+		    
+		    arr = (String[])itemsSchool.toArray(new String[itemsSchool.size()]);
 	    
 	    
 		} catch (FileNotFoundException e) {

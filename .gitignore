@@ -6,6 +6,7 @@
 /gradle
 /.gradle
 .gradle
+/bin
 
 # Compiled class file
 *.class

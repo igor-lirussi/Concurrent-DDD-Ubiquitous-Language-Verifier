@@ -1,3 +1,4 @@
+package main.java.program;
 //Usato per play e pausa, i thread fanno il check del monitor, se è ok, continunano, altrimenti aspettano
 //il controller setta off la variabile per mettere in wait tutti, setta on e segnala tutti quelli in wait che continuino
 //MONITOR, ogni metodo pubblico synchronized, no campi pubblici, 
