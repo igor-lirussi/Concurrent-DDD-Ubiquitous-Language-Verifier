@@ -18,10 +18,19 @@ jobs:
                 java-version: 15
             - name: Build and Check :P #cusom action
               run: ./gradlew clean build #performs gradlew build, it check if present checkstyle, it runs test with junit, it assembles the jar
-            - name: Send custom Telegram Message with args
-              uses: appleboy/telegram-action@master
-              with:
-                to: ${{ secrets.TELEGRAM_TO }}
-                token: ${{ secrets.TELEGRAM_TOKEN }}
-                args: CI COMPLETED for ${{ github.event_name }} event on github.com/${{ github.repository }}, by ${{ github.actor }}.
-                disable_web_page_preview: true
+    TelegramJobFailure:
+        needs: [BuildJob] #when finished this job
+        if: failure() # if fails
+        runs-on: ubuntu-latest
+        steps:
+        - name: send custom message with args
+          uses: appleboy/telegram-action@master
+          with:
+            to: ${{ secrets.TELEGRAM_TO }}
+            token: ${{ secrets.TELEGRAM_TOKEN }}
+            message: |
+                ${{ github.event_name }} event,
+                on github.com/${{ github.repository }}, 
+                by ${{ github.actor }}.
+                /!\ FAILED /!\
+            disable_web_page_preview: true
