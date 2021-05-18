@@ -1,19 +1,17 @@
-name: telegram message
+name: Telegram Message
 on: #TRIGGERS
-    push: # On  [push, workflow_dispatch, create, delete, deployment, pull_request, registry_package, release]
-        brancehs: #on branches
+    push: 
+        branches: #on branches
             - main # main one
 
 jobs:
-  Build:
-    name: TelegramJob
+  TelegramJob:
     runs-on: ubuntu-latest
     steps:
-    - name: Clone Repo with Checkout # first step
-      uses: actions/checkout@master
     - name: Send custom Telegram Message with args
       uses: appleboy/telegram-action@master
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        args: ${{ github.event_name }} event on ${{ github.repository }}, by ${{ github.actor }}.
+        args: ${{ github.event_name }} event on github.com/${{ github.repository }}, by ${{ github.actor }}.
+        disable_web_page_preview: true
