@@ -36,7 +36,7 @@ public class TaskListIgnoredWords implements Callable<String[]>  {
 		    while ((str_line = buffer.readLine()) != null) {
 		        if ((str_line.length()!=0))  
 		        { 
-		            itemsSchool.add(str_line.trim().replaceAll("\\s", ""));
+		            itemsSchool.add(str_line.trim().toLowerCase().replaceAll("\\s", ""));
 		        } 
 		    }
 		    buffer.close();

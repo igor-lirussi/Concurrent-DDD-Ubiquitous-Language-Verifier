@@ -25,7 +25,7 @@ class MyView extends JFrame implements ActionListener, ModelObserver {
 	private static final long serialVersionUID = 1L;
 	private MyController controller;
 	private int topWords;
-	private String[] pdfs;
+	private String[] filesList;
 	private JButton pause;
 	private JButton play;
 	private JTextField state;
@@ -33,12 +33,12 @@ class MyView extends JFrame implements ActionListener, ModelObserver {
 	private JTextField words;
 	private JTextArea rank;
 	
-	public MyView(MyController controller, int topWords, String[] pdfs) {
-		super("PDF Tool");
+	public MyView(MyController controller, int topWords, String[] filesList) {
+		super("DDD Tool");
 		
 		this.controller = controller;
 		this.topWords=topWords;
-		this.pdfs=pdfs;
+		this.filesList=filesList;
 		
 		setSize(300,400);	
 		setResizable(false);
@@ -66,8 +66,8 @@ class MyView extends JFrame implements ActionListener, ModelObserver {
 
 		//state
 		state = new JTextField();
-		state.setText("Pdf completed: 0");
-		progressBar = new JProgressBar(0, this.pdfs.length);
+		state.setText("Files completed: 0");
+		progressBar = new JProgressBar(0, this.filesList.length);
 		progressBar.setStringPainted(true);
 	
 		//box
@@ -133,10 +133,10 @@ class MyView extends JFrame implements ActionListener, ModelObserver {
 			SwingUtilities.invokeLater(() -> { //il thread del model non esegue operazioni gui per non creare race-conditions, non aspetta neanche per evitare deadlocks se la gui aspetta di aggiornare un elemento di cui il model ha il lock 
 				
 				int completed = model.getState();
-				state.setText("Pdf completed: " + completed);
-				System.out.println("Pdf completed: " + completed);
+				state.setText("Files completed: " + completed);
+				System.out.println("Files completed: " + completed);
 				progressBar.setValue(completed);
-				if(completed==this.pdfs.length) {
+				if(completed==this.filesList.length) {
 					actionPerformed(new ActionEvent(new Object(), 0, "end"));
 				}
 				

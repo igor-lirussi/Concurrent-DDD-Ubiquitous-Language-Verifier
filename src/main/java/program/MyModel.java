@@ -13,26 +13,26 @@ import java.util.HashMap;
 public class MyModel {
 
 	private List<ModelObserver> observers;
-	private int pdfProcessedState;
+	private int fileProcessedState;
 	private int wordsProcessed;
 	private HashMap<String, Integer> occurrences;
 	private List<Entry<String, Integer>> orederedList;
 	
 	public MyModel(){
 		observers = new ArrayList<ModelObserver>();
-		pdfProcessedState = 0;
+		fileProcessedState = 0;
 		wordsProcessed=0;
 		occurrences = new HashMap<String, Integer>();
 	}
 	
 	public synchronized void update(){
-		pdfProcessedState++;
+		fileProcessedState++;
 		orderMap();
 		notifyObservers();
 	}
 	
 	public synchronized int getState(){
-		return pdfProcessedState;
+		return fileProcessedState;
 	}
 	
 	

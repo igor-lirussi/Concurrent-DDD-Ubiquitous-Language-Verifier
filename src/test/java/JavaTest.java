@@ -9,12 +9,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 import org.junit.jupiter.api.Test;
 
+import main.java.program.Flag;
+import main.java.program.MyModel;
 import main.java.program.TaskFindFiles;
 import main.java.program.TaskListIgnoredWords;
 
@@ -100,6 +103,47 @@ class MyFirstJUnitJupiterTests {
     	//assert that in the current folder,  this class is contained in the list of files discovered
     	assertTrue(pdfsList.contains("JavaTest.java"));
     }
+    
+    
+    @Test
+    void testFlag() {
+    	Flag flag = new Flag();
+    	flag.setOn();
+    	assertTrue(flag.isOn());
+    	flag.setOff(); 
+    	//assertFalse(flag.isOn()); //the check here will be in wait till another thread sets on the flag
+    	flag.setOn();
+    	assertTrue(flag.isOn());
+    }
+    
+
+    @Test
+    void testModel() {
+    	MyModel model = new MyModel();
+    	assertEquals(0, model.getState());
+    	assertEquals(0, model.getWordsProcessed());
+    	//add Word
+    	model.addWord("test");
+    	assertEquals(0, model.getState());
+    	assertEquals(1, model.getWordsProcessed());
+    	//add Word
+    	model.addWord("test");
+    	assertEquals(0, model.getState());
+    	assertEquals(2, model.getWordsProcessed());
+    	//update
+    	model.update();
+    	assertEquals(1, model.getState());
+    	assertEquals(2, model.getWordsProcessed());
+    	//update
+    	model.update();
+    	assertEquals(2, model.getState());
+    	assertEquals(2, model.getWordsProcessed());
+
+    	//check map
+    	assertEquals("test", model.getOrderedOccurrences().get(0).getKey());
+    	assertEquals(2, model.getOrderedOccurrences().get(0).getValue());
+    }
+    
     
     
     

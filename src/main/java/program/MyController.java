@@ -10,16 +10,16 @@ public class MyController {
 	private MyModel model;
 	private Flag continueFlag;
 	private String[] ignoredWords;
-	private String[] pdfs;
+	private String[] filesList;
 	
 	long t0;
 	
 	ExecutorService	executor;
 	
-	public MyController(MyModel model, String[] ignoredWords, String[] pdfs){
+	public MyController(MyModel model, String[] ignoredWords, String[] filesList, String filesDir){
 		this.model = model;
 		this.ignoredWords= ignoredWords;
-		this.pdfs = pdfs;
+		this.filesList = filesList;
 		
 		this.continueFlag = new Flag();
 		
@@ -30,13 +30,13 @@ public class MyController {
 		ExecutorService executor = Executors.newFixedThreadPool(cores+1);
 		/*
 		//passing TASKs
-		for(String pdf:this.pdfs) {
-			executor.execute( new TaskComputePdf(this.model, this.continueFlag, "./PDF/"+pdf, this.ignoredWords));
+		for(String file:this.filesList) {
+			executor.execute( new TaskComputeFile(this.model, this.continueFlag, filesDir+"/"+file, this.ignoredWords));
 		}
 		*/
 		//for "fork-join tasks" (passo solo la folder principale, si forca per ogni sottofolder" 
 		ForkJoinPool forkJoinPool = new ForkJoinPool();
-		forkJoinPool.execute( new TaskComputeFolderForkJoin(this.model, this.continueFlag, "./PDF", this.ignoredWords, executor) );
+		forkJoinPool.execute( new TaskComputeFolderForkJoin(this.model, this.continueFlag, filesDir, this.ignoredWords, executor) );
 		//invoke aspetterebbe la terminazione, ma in questo caso non vogliamo essere bloccanti e usiamo execute
 		
 	}

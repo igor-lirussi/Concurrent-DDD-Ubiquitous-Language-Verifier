@@ -16,10 +16,10 @@ public class TaskFindFiles implements Callable<String[]>  {
 		log("Executing task "+ this.getClass().getName());
 		
 		File directoryPath = new File(dirName);
-	    String pdfs[] = directoryPath.list();
+	    String files[] = directoryPath.list();
 
 		log("Computed result "+ this.getClass().getName());
-		return pdfs; //return
+		return files; //return
 	}
 
 	private void log(String msg) {

@@ -14,7 +14,7 @@ import java.util.concurrent.TimeUnit;
 
 
 
-//il task  ìprende in input la cartella, crea dei task per ogni pdf, si forka per ogni sottocartella
+//il task  ìprende in input la cartella, crea dei task per ogni file, si forka per ogni sottocartella
 public class TaskComputeFolderForkJoin extends RecursiveAction {  //invece extends RecursiveTask<> è per quei task che sono come la callable, resituiscono future, questo è come i Runnable
 
 	private MyModel model;
@@ -38,7 +38,7 @@ public class TaskComputeFolderForkJoin extends RecursiveAction {  //invece exten
 	
 	@Override
 	protected void compute() {
-		log("Executing task "+ this.getClass().getName());
+		log("Executing task "+ this.getClass().getName() +" on folder "+ dirName);
 		
 		//lista di forks (di altri task uguali a questo) per sottocartelle
         List<RecursiveAction> forks = new LinkedList<RecursiveAction>();
@@ -46,7 +46,6 @@ public class TaskComputeFolderForkJoin extends RecursiveAction {  //invece exten
        
 		
         File directoryPath = new File(dirName);
-        log("folder "+ dirName);
 	    File folder[] = directoryPath.listFiles();
         for (File file : folder) {
         	if (file.isDirectory()) {//se directory
@@ -55,17 +54,12 @@ public class TaskComputeFolderForkJoin extends RecursiveAction {  //invece exten
 	            forks.add(task);
 	            task.fork();//lui stesso fa la fork,creando sottotask, submission implicita dell'task creato al suo executor
         	} else {
-        		log(file.getPath()+ " is: pdf");
-        		//process pdf con task submission
+        		log(file.getPath()+ " is file");
+        		//process file con task submission
         		executor.execute( new TaskComputeFile(model, continueFlag, file.getPath(), ignoredWordsArray));
         	}
         }
-        try {
-        	executor.shutdown();
-			executor.awaitTermination(Long.MAX_VALUE, TimeUnit.SECONDS  );
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+        
 		log("Computed result "+ this.getClass().getName());
 	}
 	

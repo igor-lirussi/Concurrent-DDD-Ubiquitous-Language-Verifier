@@ -19,7 +19,7 @@ public class RunProgram {
 	  
 	//Arguments
 	filesDir = "./src";
-	topWords = 10; 
+	topWords = 30; 
 	fileIgnoredWords = "./wordsToIgnore.txt";
 	try {
 		filesDir = args[0];
@@ -43,9 +43,9 @@ public class RunProgram {
 	}
 	    
     //Extracting list file names from directory, WITH A TASK passed to the executor
-	Future<String[]> futPdfList = null;
+	Future<String[]> futFilesList = null;
 	try {
-		futPdfList = executor.submit( new TaskFindFiles(filesDir) ); //faccio submit, mi restituisce una future
+		futFilesList = executor.submit( new TaskFindFiles(filesDir) ); //faccio submit, mi restituisce una future
 	} catch (Exception e) { 
 		e.printStackTrace();
 	}
@@ -69,25 +69,25 @@ public class RunProgram {
      }
     System.out.println();
 	
-	//richiesta risultato lista pdf
-    String pdfs[] = {""};
+	//richiesta risultato lista file
+    String filesList[] = {""};
 	try {
-		pdfs = futPdfList.get(); //su future mi blocco sulla get fino a che non è pronta
+		filesList = futFilesList.get(); //su future mi blocco sulla get fino a che non è pronta
 	} catch (Exception ex){
 		ex.printStackTrace();
 	}
     //stampa
-    System.out.println("List of Pdfs in the specified directory:");
-    for(int i=0; i<pdfs.length; i++) {
-       System.out.println(pdfs[i]);
+    System.out.println("List of files in the specified directory:");
+    for(int i=0; i<filesList.length; i++) {
+       System.out.println(filesList[i]);
     }
     System.out.println();
 	
     //PROGRAM STRUCTURE
 	//model con la struttura dati protetta
 	MyModel model = new MyModel();
-	MyController controller = new MyController(model, ignoredWords, pdfs);
-    MyView view = new MyView(controller, topWords, pdfs);
+	MyController controller = new MyController(model, ignoredWords, filesList, filesDir);
+    MyView view = new MyView(controller, topWords, filesList);
     model.addObserver(view);    
     view.display();
     
@@ -102,7 +102,7 @@ public class RunProgram {
 private static void usage() {
     System.err.println("Error with arguments, using default ones");
     System.err.println("Usage: java " + RunProgram.class.getName() +
-    		" <pdf directory (default "+ filesDir +")>" +
+    		" <files directory (default "+ filesDir +")>" +
     		" <number top words (default "+topWords+")>" +
     		" <file words to ignore (default "+fileIgnoredWords+")>");
 }
