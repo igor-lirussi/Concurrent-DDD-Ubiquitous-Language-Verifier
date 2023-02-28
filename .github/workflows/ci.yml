@@ -15,7 +15,7 @@ jobs:
             - name: Install JDK
               uses: joschi/setup-jdk@v2.3.0 # download jdk! Action implemented in repository "joschi/setup-jdk" tag "2.3.0"
               with: # Actions parameters (action name omitted)
-                java-version: 15
+                java-version: 8
             - name: Build and Check :P #cusom action
               run: ./gradlew clean build #performs gradlew build, it check if present checkstyle, it runs test with junit, it assembles the jar
             - name: Upload Artifacts
