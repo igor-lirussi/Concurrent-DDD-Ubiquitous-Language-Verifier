@@ -15,7 +15,15 @@ dependencies {
 }
 
 application {
-    mainClass.set("RunProgram")
+    mainClass.set("main.java.program.RunProgram")
+}
+
+tasks.jar {
+    manifest {
+        attributes(
+            "Main-Class" to "main.java.program.RunProgram"
+        )
+    }
 }
 
 tasks.named<Test>("test") {

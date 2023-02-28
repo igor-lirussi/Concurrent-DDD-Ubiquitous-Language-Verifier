@@ -42,7 +42,7 @@ public class RunProgram {
 		e.printStackTrace();
 	}
 	    
-    //Extracting list file names from directory, WITH A TASK passed to the executor
+    	//Extracting list file names from directory, WITH A TASK passed to the executor
 	Future<String[]> futFilesList = null;
 	try {
 		futFilesList = executor.submit( new TaskFindFiles(filesDir) ); //faccio submit, mi restituisce una future
@@ -101,7 +101,7 @@ public class RunProgram {
  */
 private static void usage() {
     System.err.println("Error with arguments, using default ones");
-    System.err.println("Usage: java " + RunProgram.class.getName() +
+    System.err.println("Usage: java -jar Concurrent-DDD-Ubiquitous-Language-Verifier.jar" +
     		" <files directory (default "+ filesDir +")>" +
     		" <number top words (default "+topWords+")>" +
     		" <file words to ignore (default "+fileIgnoredWords+")>");

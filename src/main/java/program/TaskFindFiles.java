@@ -16,6 +16,10 @@ public class TaskFindFiles implements Callable<String[]>  {
 		log("Executing task "+ this.getClass().getName());
 		
 		File directoryPath = new File(dirName);
+		if(!directoryPath.exists()) {
+			System.out.println("Directory not existing, created.");
+			directoryPath.mkdir();
+		}
 	    String files[] = directoryPath.list();
 
 		log("Computed result "+ this.getClass().getName());

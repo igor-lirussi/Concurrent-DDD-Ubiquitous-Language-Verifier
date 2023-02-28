@@ -2,6 +2,7 @@ package main.java.program;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -45,15 +46,18 @@ public class TaskListIgnoredWords implements Callable<String[]>  {
 	    
 	    
 		} catch (FileNotFoundException e) {
-			System.err.println("File not ignore not found, no words are going to be ignored");
-	        e.printStackTrace();
+			System.err.println("File for ignored words not found, created. No words are going to be ignored");
+			try {
+				new File(fileIgnoredWords).createNewFile();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		try {
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

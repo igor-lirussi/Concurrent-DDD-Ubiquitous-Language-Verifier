@@ -18,8 +18,45 @@ jobs:
                 java-version: 15
             - name: Build and Check :P #cusom action
               run: ./gradlew clean build #performs gradlew build, it check if present checkstyle, it runs test with junit, it assembles the jar
+            - name: Upload Artifacts
+              uses: actions/upload-artifact@v2
+              with:
+                name: Artifacts
+                path: ./build/libs/Concurrent-DDD-Ubiquitous-Language-Verifier.jar
+    UploadRelease:
+        needs: [BuildJob]
+        runs-on: ubuntu-latest
+        steps:
+            - name: Clone git repo
+              uses: actions/checkout@v3
+            - name: Download Artifacts
+              uses: actions/download-artifact@v2
+              with:
+                name: Artifacts
+            - name: Extract Date
+              shell: bash
+              id: extract_date
+              run: |
+                echo "::set-output name=DATE::Release_$(cat VERSION.md)_$(date +%F_%H-%M)"
+            - name: Print Output Step
+              run: echo ${{ steps.extract_date.outputs.DATE }}
+            - name: Deploy
+              env:
+                GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                git config --global user.name github-actions
+                git config --global user.email github-actions@github.com
+                TAG="${{ steps.extract_date.outputs.DATE }}"
+                echo $TAG
+                MSG="${{ github.event.head_commit.message }}"
+                echo $MSG
+                hub release create -m "$TAG" "$TAG" || true
+                tree
+                ls
+                FILE="./Concurrent-DDD-Ubiquitous-Language-Verifier.jar"
+                gh release upload "$TAG" "$FILE" --clobber
     TelegramJobFailure:
-        needs: [BuildJob] #when finished this job
+        needs: [UploadRelease] #when finished this job
         if: failure() # if fails
         runs-on: ubuntu-latest
         steps:
